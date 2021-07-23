@@ -1,11 +1,12 @@
 const sharp = require("sharp");
 const filename = process.argv[2];
+const splitnum = process.argv[3] || 4;
 // console.log(filename);
 const image = sharp(filename);
 
 image.metadata().then((info) => {
-  let newwidth = info.width / 4;
-  for (i = 0; i < 4; i++) {
+  let newwidth = info.width / splitnum;
+  for (i = 0; i < splitnum; i++) {
     sharp(filename)
       .extract({
         left: newwidth * i,
@@ -13,7 +14,7 @@ image.metadata().then((info) => {
         width: newwidth,
         height: info.height,
       })
-      .toFile(`${filename}-${i}.png`, function (err) {
+      .toFile(`dst/${filename}-${i}.jpg`, function (err) {
         // Extract a region of the input image, saving in the same format.
       });
   }
